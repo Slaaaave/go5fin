@@ -5,13 +5,11 @@ import "fmt"
 type Personal struct {
 	Name   string
 	Weight float64
-	Height int
+	Height float64
 	// TODO: добавить поля
 }
 
 func (p Personal) Print() {
 	// TODO: реализовать функцию
-	fmt.Println("Имя:", p.Name)
-	fmt.Println("Вес:", p.Weight)
-	fmt.Println("Рост:", p.Height)
+	fmt.Printf("Имя: %s\nВес: %.2f\nРост: %.2f\n", p.Name, p.Weight, p.Height)
 }

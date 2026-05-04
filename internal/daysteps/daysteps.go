@@ -1,6 +1,7 @@
 package daysteps
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -25,12 +26,18 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 	}
 	steps, err := strconv.Atoi(splitedString[0])
 	if err != nil {
-		return fmt.Errorf("передан неверный формат данных о шагах")
+		return fmt.Errorf("передан неверный формат данных оо шагах")
+	}
+	if steps <= 0 {
+		return errors.New("отрицательное число или ноль в steps")
 	}
 	ds.Steps = steps
 	duration, err := time.ParseDuration(splitedString[1])
 	if err != nil {
 		return fmt.Errorf("передан неверный формат данных о времени")
+	}
+	if duration <= 0 {
+		return errors.New("отрицательное число или ноль в duration")
 	}
 	ds.Duration = duration
 	return nil
@@ -44,6 +51,6 @@ func (ds DaySteps) ActionInfo() (string, error) {
 		return "", err
 	}
 
-	actionInfo := fmt.Sprintf("Количество шагов: %d.\nДистанция составила %.2f км.\nВы сожгли %.2f ккал. ", ds.Steps, distance, walkingSpentCalories)
+	actionInfo := fmt.Sprintf("Количество шагов: %d.\nДистанция составила %.2f км.\nВы сожгли %.2f ккал.\n", ds.Steps, distance, walkingSpentCalories)
 	return actionInfo, err
 }
