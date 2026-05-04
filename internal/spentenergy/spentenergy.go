@@ -16,7 +16,7 @@ const (
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	// TODO: реализовать ошибки
 	if steps <= 0 || weight <= 0 || height <= 0 || duration <= 0 {
-		return 0, fmt.Errorf("Некорректный ввод шагов")
+		return 0, fmt.Errorf("")
 	}
 	meanSpeed := MeanSpeed(steps, height, duration)
 	durationInMins := duration.Minutes()
@@ -28,7 +28,7 @@ func WalkingSpentCalories(steps int, weight, height float64, duration time.Durat
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	// TODO: реализовать ошибки
 	if steps <= 0 || weight <= 0 || height <= 0 || duration <= 0 {
-		return 0, fmt.Errorf("Некорректный ввод шагов")
+		return 0, fmt.Errorf("")
 	}
 	meanSpeed := MeanSpeed(steps, height, duration)
 	durationInMins := duration.Minutes()

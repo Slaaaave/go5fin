@@ -30,11 +30,17 @@ func (t *Training) Parse(datastring string) (err error) {
 	if err != nil {
 		return errors.New("Ошибка в конвертации шагов")
 	}
+	if steps <= 0 {
+		return errors.New("Отрицательное или неверное значение")
+	}
 	t.Steps = steps
 	t.TrainingType = splittedString[1]
 	duration, err := time.ParseDuration(splittedString[2])
 	if err != nil {
 		return errors.New("Ошибка в конвертации времени")
+	}
+	if duration <= 0 {
+		return errors.New("Отрицательное или неверное значение")
 	}
 	t.Duration = duration
 	return nil
@@ -44,6 +50,7 @@ func (t Training) ActionInfo() (string, error) {
 	// TODO: реализовать функцию
 	distance := spentenergy.Distance(t.Steps, float64(t.Height))
 	meanSpeed := spentenergy.MeanSpeed(t.Steps, float64(t.Height), t.Duration)
+	durationHours := t.Duration.Hours()
 
 	switch t.TrainingType {
 	case "Бег":
@@ -51,18 +58,18 @@ func (t Training) ActionInfo() (string, error) {
 		if err != nil {
 			return fmt.Sprintf("Ошибка в каллориях"), err
 		}
-		training := fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f", t.TrainingType, t.Duration, distance, meanSpeed, runningSpent)
+		training := fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f\n", t.TrainingType, durationHours, distance, meanSpeed, runningSpent)
 		return training, err
 	case "Ходьба":
 		walkSpent, err := spentenergy.WalkingSpentCalories(t.Steps, t.Weight, float64(t.Height), t.Duration)
 		if err != nil {
 			return fmt.Sprintf("Ошибка в каллориях"), err
 		}
-		training := fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f", t.TrainingType, t.Duration, distance, meanSpeed, walkSpent)
+		training := fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f\n", t.TrainingType, durationHours, distance, meanSpeed, walkSpent)
 		return training, err
 	default:
-		training := "неизвестный тип тренировки"
-		err := errors.New("неизвестный тип тренировки")
+		training := ""
+		err := errors.New("")
 		return training, err
 	}
 }
